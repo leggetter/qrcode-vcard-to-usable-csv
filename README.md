@@ -1,6 +1,6 @@
 # QRCode -> vCard -> Usable CSV
 
-I was recently at QCon London and the team captured a number of attendee details via QRCode readers. This gives you the full attendee detail in a vCard (vcf). At the end of the day you can then export those captures to CSV. However, you end up getting a CSV with 3 rows e.g.
+I was recently at QCon London and the team captured a number of attendee details via QRCode readers. This gives you the full attendee detail in a vCard (vcf). At the end of the day you can then export those captures to CSV. However, you end up getting a CSV with 3 columns e.g.
 
 ```
 Name, Text, Date
