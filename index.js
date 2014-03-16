@@ -14,16 +14,18 @@ fs.readdir( dataDir, function( err, files ) {
   filesToParse = files.length;
 
   files.forEach( function( file ) {
-    new VCardToCSV( dataDir + file, parseComplete );
+    new VCardCSVToObjConverter( dataDir + file, parseComplete );
   } );
 
 } );
 
+// Callback when each .csv file has been parsed
 function parseComplete( newCards ) {
   vCards = vCards.concat( newCards );
 
   ++filesParsed;
 
+  // All files have been parsed
   if( filesParsed === filesToParse ) {
     console.log( vCards );
     console.log( 'complete:', vCards.length );
@@ -32,6 +34,8 @@ function parseComplete( newCards ) {
   }
 }
 
+// convert to a multi-dimensional Array
+// that can them be converted to a usable CSV
 function arrayToFormattedCSV() {
   var contacts = [];
   /*
@@ -75,9 +79,10 @@ function arrayToFormattedCSV() {
     .from( joined )
     .to( __dirname + '/results/result.csv' );
 
-  console.log( 'really compeleted' );
+  console.log( 'really completed' );
 }
 
+// Sometimes a vCard property isn't present
 function safeGet( card, prop ) {
   var data = '';
 
@@ -86,12 +91,18 @@ function safeGet( card, prop ) {
   }
   catch( e ) { }
 
+  // remove semi-colons as they seem out of place.
+  // remove commas as they break the CSV
   data = data.replace( /([;*]|[,*])/g, ' ' ).trim();
 
   return data;
 }
 
-function VCardToCSV( path, callback ) {
+/**
+ * Read the CSV containing the vCard info and push
+ * each vCard into an array as an Object.
+ */
+function VCardCSVToObjConverter( path, callback ) {
   this.vcards = [];
   this._callback = callback;
 
@@ -101,12 +112,12 @@ function VCardToCSV( path, callback ) {
     .on( 'end', this._finished.bind( this ) );
 };
 
-VCardToCSV.prototype._handleRecord = function( row, index ) {
+VCardCSVToObjConverter.prototype._handleRecord = function( row, index ) {
   var card = vcf.parse( row[ 1 ] )
   this.vcards.push( card );
 };
 
-VCardToCSV.prototype._finished = function() {
+VCardCSVToObjConverter.prototype._finished = function() {
   // console.log( this.vcards );
   this._callback( this.vcards );
 };

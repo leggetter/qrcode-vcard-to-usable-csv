@@ -26,3 +26,12 @@ Maybe it'll be useful to others.
 1. Put your QRCode vCard capture .csv files in `data`
 2. Run `node index.js`
 3. Upload the `data/results.csv` file into Mail Chimp or similar
+
+## TODO
+
+The code sucks! But it works.
+
+* Refactor<sup>†</sup>
+* Add tests†<sup>†</sup>
+
+<sup>†</sup> only if anybody ever uses this again
